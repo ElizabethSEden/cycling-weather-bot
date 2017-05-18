@@ -1,9 +1,3 @@
-#Southwark locations:
-#Southwark
-#Millwall f.c.
-#rotherhithe youth hostel
-#Crystal palace national sports centre
-
 from bs4 import BeautifulSoup
 import urllib.request
 from datetime import datetime
@@ -25,10 +19,9 @@ def get_Southwark_pollution_forecasts(items):
     today = datetime.now().strftime('%a')
     pollution = {}
     for forecast in items:
-        if (forecast.find("title").string == "SOUTHWARK"
-            or forecast.find("title").string == "MILLWALL F.C."
-            or forecast.find("title").string == "ROTHERHITHE YOUTH HOSTEL"
-            or forecast.find("title").string == "CRYSTAL PALACE NATIONAL SPORTS CENTRE"):
+        if (forecast.find("title").string == #monitoring station name
+            or forecast.find("title").string == #another monitoring station name
+            ):
             description = forecast.find("description").string
             begin = description.find(today)
             pollution[description] = int(description[begin + 5: begin + 7].rstrip())
