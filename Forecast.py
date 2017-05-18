@@ -1,3 +1,5 @@
+from datetime import datetime, date
+
 class Forecast:
     def __init__(self, api_data):
         self.gust = int(api_data.G)
@@ -7,6 +9,8 @@ class Forecast:
         self.temperature = int(api_data.T)
         self.rain = int(api_data.Pp)
         self.UV = int(api_data.U)
+        self.humidity = int(api_data.H)
+        self.time = int(api_data.id)/60 + BST_offset(date.today())
 
 class Forecasts:
     #forecasts will be a list of 6 Forecast objects
@@ -29,4 +33,24 @@ class Forecasts:
         self.temperatures = [f.temperature for f in forecasts]
         self.rain = [f.rain for f in forecasts]
         self.uv = [f.UV for f in forecasts]
-        
+        self.humidity = [f.humidity for f in forecasts]
+
+def BST_offset(input_date):
+    if input_date.month in range(4,9):
+        return 1
+    if input_date.month in [11,12,1,2]:
+        return 0
+    # Find start and end dates for current year
+    current_year = input_date.year
+
+    #So for March and October
+    for day in range(25,32): #Loop through days until you find Saturday
+        if datetime(current_year,3,day).weekday()==6:
+            BST_start = datetime(current_year,3,day,1)
+        if datetime(current_year,10,day).weekday()==6:
+            BST_end = datetime(current_year,10,day,1)
+
+    if (input_date > BST_start) and (input_date < BST_end):
+        return 1
+
+    return 0
