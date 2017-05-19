@@ -7,22 +7,14 @@ from Forecast import Forecasts
 from craft_message import *
 from get_updates import write_updates
 from pollution import *
-
-#enter the corresponding information from your Twitter application:
-CONSUMER_KEY = 
-CONSUMER_SECRET = 
-ACCESS_KEY = 
-ACCESS_SECRET = 
+from settings import *
 
 auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
 auth.set_access_token(ACCESS_KEY, ACCESS_SECRET)
 api = tweepy.API(auth)
 
 #Get forecast from MetOffice
-MET_API_KEY = #Your MetOffice DataPoint developer key
-LOCATION_ID = #Go to http://datapoint.metoffice.gov.uk/public/data/val/wxfcs/all/xml/sitelist?key=MET_API_KEY to see a list of sites with their ids
-
-with urllib.request.urlopen('http://datapoint.metoffice.gov.uk/public/data/val/wxfcs/all/json/'+LOCATION_ID+'?res=3hourly&key='+MET_API_KEY) as url:
+with urllib.request.urlopen('http://datapoint.metoffice.gov.uk/public/data/val/wxfcs/all/json/'+MET_LOCATION_ID+'?res=3hourly&key='+MET_API_KEY) as url:
     data = url.read().decode()
 
 #Turn into Forecasts object

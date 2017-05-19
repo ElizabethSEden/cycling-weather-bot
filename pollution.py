@@ -1,10 +1,11 @@
 from bs4 import BeautifulSoup
 import urllib.request
 from datetime import datetime
+from settings import POLLUTION_LOCATIONS
 
 def get_pollution_alert():
     items = get_pollution_from_defra()
-    pollution = get_Southwark_pollution_forecasts(items)
+    pollution = get_local_pollution_forecasts(items)
     for forecast in sorted(pollution, key=pollution.get, reverse=True):
         level = pollution[forecast]
         if 4 <= level <= 6:
@@ -15,13 +16,11 @@ def get_pollution_alert():
             return "Very high pollution today - it's going to be nasty out. Reduce pollution by not driving."
     return None
 
-def get_Southwark_pollution_forecasts(items):
+def get_local_pollution_forecasts(items):
     today = datetime.now().strftime('%a')
     pollution = {}
     for forecast in items:
-        if (forecast.find("title").string == #monitoring station name
-            or forecast.find("title").string == #another monitoring station name
-            ):
+        if (forecast.find("title").string in POLLUTION_LOCATIONS):
             description = forecast.find("description").string
             begin = description.find(today)
             pollution[description] = int(description[begin + 5: begin + 7].rstrip())
