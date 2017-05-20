@@ -18,7 +18,7 @@ with urllib.request.urlopen('http://datapoint.metoffice.gov.uk/public/data/val/w
     data = url.read().decode()
 
 #Turn into Forecasts object
-data = data.replace("$","id")
+data = data.replace("$","time") #Namespace can't handle a variable named $, so rename it to time
 api_data = json.loads(data, object_hook=lambda d: Namespace(**d))
 forecasts = Forecasts(api_data)
 
