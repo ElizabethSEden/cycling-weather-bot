@@ -3,7 +3,11 @@ import calendar
 
 
 def get_time_index(update):
-    if "today" in update:
+    if "warning" in update:
+        return 7
+    if "pollution" in update:
+        return 8
+    elif "today" in update:
         return 0
     elif "this morning" in update:
         return 1
@@ -15,8 +19,10 @@ def get_time_index(update):
         return 4
     elif "tonight" in update:
         return 5
+    elif " day" in update:
+        return 6
     else:
-        return None
+        raise Exception("time not set: {}".format(update))
 
 
 def sort_by_time(updates):

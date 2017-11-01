@@ -9,11 +9,11 @@ def get_pollution_alert():
     for forecast in sorted(pollution, key=pollution.get, reverse=True):
         level = pollution[forecast]
         if 4 <= level <= 6:
-            return "Moderate pollution today. Reduce pollution by not driving."
+            return "Moderate air pollution ({}) today. Reduce pollution by not driving.".format(level)
         elif 7 <= level <= 9:
-            return "High pollution today. You may get sore eyes, cough or sore throat, especially if you cycle fast. Reduce pollution by not driving."
+            return "High air pollution ({}) today. You may get sore eyes, cough or sore throat, especially if you cycle fast. Reduce pollution by not driving.".format(level)
         elif level >= 10:
-            return "Very high pollution today - it's going to be nasty out. Reduce pollution by not driving."
+            return "Very high air pollution ({}) today - it's going to be nasty out. Reduce pollution by not driving.".format(level)
     return None
 
 def get_local_pollution_forecasts(items):

@@ -29,9 +29,9 @@ class PrecipitationUpdateMaker(UpdateMaker):
 
 def get_precipitation_probability(forecasts):
     precipitation_probability = max(f.rain for f in forecasts)
-    if precipitation_probability > 80:
+    if precipitation_probability >= 80:
         return "There's going to be"
-    elif 50 < precipitation_probability <= 80:
+    elif 50 < precipitation_probability < 80:
         return "There's probably going to be"
     elif precipitation_probability > 20:
         return "There might be"
@@ -46,6 +46,7 @@ def intensity(forecasts):
 def showers(forecasts):
     if all("shower" in f.weather_type for f in forecasts):
         return " showers"
+    return ""
 
 def get_time(forecasts):
     if len(forecasts) == 0:

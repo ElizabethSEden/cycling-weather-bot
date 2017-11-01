@@ -12,9 +12,35 @@ MET_API_KEY = 	   # API Key
 # substituting your Met Office API key
 MET_LOCATION_ID =  # e.g. for Southwark it is '353605'
 
+#Further Met Office API documentation can be found at
+#http://www.metoffice.gov.uk/binaries/content/assets/mohippo/pdf/3/0/datapoint_api_reference.pdf
+
 # Pollution
 # A list of strings identifying locations to search for pollution data. 
 # Search for your location on https://uk-air.defra.gov.uk/ and choose the 
 # nearest monitoring site(s). Enter their names in ALL CAPS (i.e. as they appear
 # in the UK_AIR RSS feed - https://uk-air.defra.gov.uk/assets/rss/forecast.xml)
-POLLUTION_LOCATIONS = [] 
+POLLUTION_LOCATIONS = []
+
+#Region code for weather warnings
+#A string identifying the region to search for weather warnings on Met Office site. Choose from list below.
+REGION_CODE =
+REGION_NAME =
+
+#os Orkney and Shetland
+#he Highland & Eilean Siar
+#gr Grampian
+#ta Central, Tayside & Fife
+#st Strathclyde
+#dg Dumfries, Galloway, Lothian & Borders
+#ni Northern Ireland
+#yh Yorkshire & Humber
+#ne North East England
+#em East Midlands
+#ee East of England
+#se London & South East England
+#nw North West England
+#wm West Midlands
+#sw South West England
+#wl Wales
+#uk United Kingdom
