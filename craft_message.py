@@ -40,7 +40,7 @@ def fit_into_tweets(updates):
     addToAlert = True
     i = 1
     for update in updates:
-        if (len(alert) + len(update) < 140):
+        if (len(alert) + len(update) < 280):
             alert += update + " "
             addToAlert = True
         else:
