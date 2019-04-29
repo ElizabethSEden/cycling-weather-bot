@@ -42,7 +42,7 @@ if weather_warning is not None:
     updates.append(str(weather_warning))
 
 if len(updates) == 0:
-    updates.append("An English day. No rain, but cloudy; not hot or cold; not windy or foggy; not humid or dry.")
+    updates.append("Grey day.")
 
 alerts = fit_into_tweets(sort_by_time(updates))
 

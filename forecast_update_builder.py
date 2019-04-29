@@ -43,7 +43,7 @@ class ForecastUpdateBuilder:
     def add_temperature_update(self):
         min_temp = min(f.temperature for f in self.forecasts)
         self.add_first_matching([
-            UpdateMaker("It's going to feel freezing {}.", lambda f: f.temperature <= 0),
+            UpdateMaker("It's going to feel freezing ({1}°C) {0}.", lambda f: f.temperature <= 0, args=[min_temp]),
             UpdateMaker("It's going to feel cold ({1}°C) {0}.", lambda f: f.temperature < 5, args=[min_temp])
         ])
 
@@ -60,7 +60,7 @@ class ForecastUpdateBuilder:
             UpdateMaker("It's going to be oppressively humid {0} (dew point {1}°C).", lambda f: f.dew_point is not None and f.dew_point >= 24, args=[max_dew_point]),
             UpdateMaker("It's going to be very humid {0} (dew point {1}°C).", lambda f: f.dew_point is not None and f.dew_point >= 21, args=[max_dew_point]),
             UpdateMaker("It's going to be quite humid {0} (dew point {1}°C).", lambda f: f.dew_point is not None and f.dew_point >= 18, args=[max_dew_point]),
-            UpdateMaker("It's going to be uncomfortably dry {0} (dew point {1}°C).", lambda f: f.dew_point is not None and f.dew_point <= -5, args=[min_dew_point])
+            UpdateMaker("There'll be uncomfortably low humidity {0} (dew point {1}°C).", lambda f: f.dew_point is not None and f.dew_point <= -5, args=[min_dew_point])
         ])
 
     # def add_rain_update(self):
