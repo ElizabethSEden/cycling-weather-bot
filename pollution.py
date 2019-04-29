@@ -30,6 +30,6 @@ def get_local_pollution_forecasts(items):
 def get_pollution_from_defra():
     with urllib.request.urlopen('https://uk-air.defra.gov.uk/assets/rss/forecast.xml') as url:
         data = url.read().decode()
-    soup = BeautifulSoup(data, "xml")
+    soup = BeautifulSoup(data, "lxml-xml")
     items = soup.findAll("item")
     return items
