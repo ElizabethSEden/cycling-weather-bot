@@ -20,36 +20,49 @@ class ForecastUpdateBuilder:
     def add_wind_update(self):
         max_wind_speed = max(f.wind_speed for f in self.forecasts)
         self.add_first_matching([
-            UpdateMaker("Hurricane {}.", lambda f: f.wind_speed >= 73),
-            UpdateMaker("Violent storm {} (Force 11).", lambda f: f.wind_speed >= 64),
-            UpdateMaker("Storm {} (Force 10) - trees uprooted.", lambda f: f.wind_speed >= 55),
-            UpdateMaker("Strong gale {} (Force 9) - cars will veer on road - cycling not recommended.", lambda f: f.wind_speed >= 47),
-            UpdateMaker("Gale {} (Force 8) - cars will veer on road - cycling not recommended.", lambda f: f.wind_speed >= 39),
+            UpdateMaker("Hurricane {} 🌀.", lambda f: f.wind_speed >= 73),
+            UpdateMaker("Violent storm {} (Force 11). 🌪️", lambda f:
+            f.wind_speed >= 64), #tornado emoji
+            UpdateMaker("Storm {} (Force 10) - trees uprooted. 🌪️", lambda f:
+            f.wind_speed >= 55), #tornado emoji
+            UpdateMaker("Strong gale {} (Force 9) - cars will veer on road - cycling not recommended. 🌪️", lambda f: f.wind_speed >= 47),
+            UpdateMaker("Gale {} (Force 8) - cars will veer on road - "
+                        "cycling not recommended. 🌪️", lambda f: f.wind_speed >= 39), #tornado emoji
             UpdateMaker("Strong winds {0} (Force 7, {1}mph) - cycling will be hard.", lambda f: f.wind_speed >= 30, args=[max_wind_speed]),
-            UpdateMaker("Wind gusts over 40mph {} (Force 8, gale).", lambda f: f.gust >= 40),
-            UpdateMaker("Wind gusts over 30mph {} (Force 7, near gale).", lambda f: f.gust >= 30),
-            UpdateMaker("Wind gusts over 25mph {} (Force 6, strong breeze).",     lambda f: f.gust >= 25),
-            UpdateMaker("Wind speeds over 15mph {} (Force 4, moderate breeze). Dust in the air.", lambda f: f.wind_speed >= 15)
+            UpdateMaker("Wind gusts over 40mph {} (Force 8, gale) 🌬️.",
+                        #emoji - wind face
+                        lambda f: f.gust >= 40),
+            UpdateMaker("Wind gusts over 30mph {} (Force 7, near gale) 🌬️.", #emoji - wind face
+                        lambda f: f.gust >= 30),
+            UpdateMaker("Wind gusts over 25mph {} (Force 6, strong breeze) 🌬️"
+                        ".",     lambda f: f.gust >= 25), #emoji - wind face
+            UpdateMaker("Wind speeds over 15mph {} (Force 4, moderate "
+                        "breeze). Dust in the air 🍃.", lambda f: f.wind_speed >= 15)
         ])
 
     def add_UV_update(self):
         uv_index = max(f.UV for f in self.forecasts)
         self.add_first_matching([
-            UpdateMaker("Very high UV ({1}) {0}  - avoid going out at midday.", lambda f: f.UV >= 8, args=[uv_index]),
-            UpdateMaker("High UV ({1}) {0} - cover up.",                        lambda f: f.UV >= 6, args=[uv_index]),
+            UpdateMaker("Very high UV ({1}) {0}  - avoid going out at midday ⛱️.", lambda f: f.UV >= 8, args=[uv_index]),
+            UpdateMaker("High UV ({1}) {0} - cover up 🕶️.",
+                        lambda f: f.UV >= 6, args=[uv_index]), #sunglasses
+            # emoji
             UpdateMaker("Moderate UV ({1}) {0} - take care if you're fair.",    lambda f: f.UV >= 4, args=[uv_index])
         ])
 
     def add_temperature_update(self):
         min_temp = min(f.temperature for f in self.forecasts)
         self.add_first_matching([
-            UpdateMaker("It's going to feel freezing ({1}°C) {0}.", lambda f: f.temperature <= 0, args=[min_temp]),
+            UpdateMaker("It's going to feel freezing ({1}°C) {0} 🥶.", lambda
+                f: f.temperature <= 0, args=[min_temp]), #cold face emoji
             UpdateMaker("It's going to feel cold ({1}°C) {0}.", lambda f: f.temperature < 5, args=[min_temp])
         ])
 
         max_temp = max(f.temperature for f in self.forecasts)
         self.add_first_matching([
-            UpdateMaker("It's going to feel hot ({1}°C) {0}.", lambda f: f.temperature >= 23, args=[max_temp]),
+            UpdateMaker("It's going to feel hot ({1}°C) {0} 🌡️.", lambda f:
+            #emoji thermometer
+            f.temperature >= 23, args=[max_temp]),
             UpdateMaker("It's going to feel warm ({1}°C) {0}.", lambda f: f.temperature >= 18, args=[max_temp])
         ])
 
@@ -57,9 +70,12 @@ class ForecastUpdateBuilder:
         max_dew_point = int(round(max(f.dew_point for f in self.forecasts if f.dew_point is not None)))
         min_dew_point = int(round(min(f.dew_point for f in self.forecasts if f.dew_point is not None)))
         self.add_first_matching([
-            UpdateMaker("It's going to be oppressively humid {0} (dew point {1}°C).", lambda f: f.dew_point is not None and f.dew_point >= 24, args=[max_dew_point]),
-            UpdateMaker("It's going to be very humid {0} (dew point {1}°C).", lambda f: f.dew_point is not None and f.dew_point >= 21, args=[max_dew_point]),
-            UpdateMaker("It's going to be quite humid {0} (dew point {1}°C).", lambda f: f.dew_point is not None and f.dew_point >= 18, args=[max_dew_point]),
+            UpdateMaker("It's going to be oppressively humid {0} (dew point "
+                        "{1}°C) 💦.", lambda f: f.dew_point is not None and f.dew_point >= 24, args=[max_dew_point]),
+            UpdateMaker("It's going to be very humid {0} (dew point {1}°C) 💦"
+                        ".", lambda f: f.dew_point is not None and f.dew_point >= 21, args=[max_dew_point]),
+            UpdateMaker("It's going to be quite humid {0} (dew point {"
+                        "1}°C).", lambda f: f.dew_point is not None and f.dew_point >= 17, args=[max_dew_point]),
             UpdateMaker("There'll be uncomfortably low humidity {0} (dew point {1}°C).", lambda f: f.dew_point is not None and f.dew_point <= -5, args=[min_dew_point])
         ])
 
@@ -84,6 +100,10 @@ class ForecastUpdateBuilder:
     def add_lovely_day(self):
         adjectives = ["Beautiful", "Lovely", "Nice"]
         activities = ["to be outside", "for a bike ride"]
+        if all(f.weather_type == "sunny" for f in self.forecasts):
+            emoji = "☀"
+        else:
+            emoji ="🌤️" #emoji of sun behind small cloud
         if (all(f.weather_type == "sunny" or f.weather_type == "partly cloudy" for f in self.forecasts)
         and not any(f.dew_point is not None and f.dew_point >=18 for f in self.forecasts)
         and all(f.wind_speed < 15 for f in self.forecasts)
@@ -92,21 +112,27 @@ class ForecastUpdateBuilder:
         and all (f.temperature > 5 for f in self.forecasts)
         and all (f.UV < 8 for f in self.forecasts)
         ):
-            self.add("{} day {}!".format(random.choice(adjectives), random.choice(activities)))
+            self.add("{} day {}!".format(random.choice(adjectives),
+                                          random.choice(activities), emoji))
 
     def add_fog_update(self):
         self.add_first_matching([
-            UpdateMaker("It's going to be foggy {}.", lambda f: f.weather_type == "foggy"),
+            UpdateMaker("It's going to be foggy {} 🌫️.", lambda f: #fog emoji
+            f.weather_type == "foggy"),
             UpdateMaker("It's going to be misty {}.", lambda f: f.weather_type == "misty"),
         ])
 
     def add_precipitation_update(self):
         self.add(PrecipitationUpdateMaker("{probability} sleet {time}{showers}.", lambda f: f.weather_type == "sleet").make(self.forecasts))
-        self.add(PrecipitationUpdateMaker("{probability} hail {time}{showers2}.", lambda f: f.weather_type == "hail").make(self.forecasts))
-        self.add(PrecipitationUpdateMaker("{probability}{intensity} snow{showers} {time}.", lambda f: "snow" in f.weather_type).make(self.forecasts))
-        self.add(PrecipitationUpdateMaker("{probability} thunderstorm {showers}{time}.", lambda f: "thunder" in f.weather_type).make(self.forecasts))
+        self.add(PrecipitationUpdateMaker("{probability} hail {time}{showers}.", lambda f: f.weather_type == "hail").make(self.forecasts))
+        self.add(PrecipitationUpdateMaker("{probability}{intensity} snow{"
+                                          "showers} {time} ❄️.", lambda f: "snow" in f.weather_type).make(self.forecasts))
+        self.add(PrecipitationUpdateMaker("{probability} thunder{"
+                                          "showers}{time}. 🌩️", lambda f:
+        "thunder" in f.weather_type).make(self.forecasts)) #lightning emoji
 
         self.add_first_matching([
-            PrecipitationUpdateMaker("{probability}{intensity} rain{showers} {time}.", lambda f: "rain" in f.weather_type),
+            PrecipitationUpdateMaker("{probability}{intensity} rain{"
+                                     "showers} {time} 🌧️.", lambda f: "rain" in f.weather_type), #rain emoji
             PrecipitationUpdateMaker("{probability} drizzle {time}.", lambda f: f.weather_type == "drizzle"),
         ])
