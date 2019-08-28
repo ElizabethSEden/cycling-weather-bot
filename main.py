@@ -9,6 +9,7 @@ from get_updates import write_updates
 from pollution import get_pollution_alert
 from weather_warning import get_weather_warning
 from settings import *
+from datetime import date
 
 auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
 auth.set_access_token(ACCESS_KEY, ACCESS_SECRET)
@@ -36,10 +37,13 @@ pollution_alert = get_pollution_alert()
 if pollution_alert is not None:
     updates.append(pollution_alert)
 
-weather_warning = get_weather_warning()
+try:
+    weather_warning = get_weather_warning()
+    if weather_warning is not None:
+        updates.append(str(weather_warning))
+except:
+    api.send_direct_message(recipient_id=RECIPIENT_ID,text="Weather warnings broken on "+date.today().__str__())
 
-if weather_warning is not None:
-    updates.append(str(weather_warning))
 
 if len(updates) == 0:
     updates.append("Grey day.")
