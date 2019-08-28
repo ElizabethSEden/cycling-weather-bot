@@ -21,13 +21,12 @@ class WarningDetails:
             if warningMatrixTable is None:
                 raise NoWarningsException
             self.colour = self.get_colour(warningMatrixTable)
-            self.event = self.get_event(soup.find("span", class_="wxDetails"))
-            self.time_from = self.get_times(soup.find("span", class_="wxDetails"))[0]
-            if (self.time_from.split('T')[0] != date.today().isoformat()):
-               raise NoWarningsException
-            elif (int(self.time_from.split('T')[1].split(':')[0]) > 22):
+            self.event = soup.find("div", class_="wxType").contents[0].lower()
+            self.times = self.get_times(soup.find("div", class_="warningDate"))
+            self.time_from = self.times[0]
+            self.time_to = self.times[1]
+            if not (self.time_from.split("T")[0] <= date.today().isoformat() and self.time_to.split("T")[0]  >=date.today().isoformat()):
                 raise NoWarningsException
-            self.time_to = self.get_times(soup.find("span", class_="wxDetails"))[1]
             likelihood = 1
             for tr in warningMatrixTable.find_all("tr"):
                 if tr.find_all("td", class_="selected"):
@@ -63,9 +62,6 @@ class WarningDetails:
                 return "amber"
             elif attribute == "red":
                 return "red"
-
-    def get_event(self, warning):
-        return warning.find("span", class_="wxType").contents[0].lower()
 
     def get_times(self, warning):
         return [x["datetime"] for x in warning.find_all("time")]
