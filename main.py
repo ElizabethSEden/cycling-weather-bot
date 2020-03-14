@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
  
-import tweepy, urllib.request, json
+import tweepy, json
+from urllib.request import Request, urlopen
 from types import SimpleNamespace as Namespace
 from Forecast import Forecasts
 from craft_message import *
@@ -16,8 +17,10 @@ auth.set_access_token(ACCESS_KEY, ACCESS_SECRET)
 api = tweepy.API(auth)
 
 #Get forecast from MetOffice
-with urllib.request.urlopen('http://datapoint.metoffice.gov.uk/public/data/val/wxfcs/all/json/'+MET_LOCATION_ID+'?res=3hourly&key='+MET_API_KEY) as url:
-    data = url.read().decode()
+url = 'http://datapoint.metoffice.gov.uk/public/data/val/wxfcs/all/json/'+MET_LOCATION_ID+'?res=3hourly&key='+MET_API_KEY
+req = Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+with urlopen(req) as web_forecast:
+    data = web_forecast.read().decode()
 
 #Turn into Forecasts object
 data = data.replace("$","time") #Namespace can't handle a variable named $, so rename it to time
